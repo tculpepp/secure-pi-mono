@@ -38,6 +38,12 @@
   extension loader resolves `@earendil-works/pi-*` and legacy `@mariozechner/pi-*`
   specifiers alongside `@tculpepp/spi-*`.
 
+#### Fixed
+
+- Fixed first-time setup never triggering on this fork's own build: `isOfficialDistribution()`
+  compared against a hardcoded `"pi"` app name left over from the rebrand, so it always
+  returned `false` even though the running app name resolves to `"spi"`.
+
 ### Upstream
 
 ### Added

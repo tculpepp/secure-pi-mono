@@ -45,7 +45,7 @@ Dependency hierarchy: `pi-ai` → `pi-agent-core` → `pi-coding-agent` (+ `pi-t
 
 ### Security Fork
 
-This repo is a closed-network security fork of [badlogic/pi-mono](https://github.com/badlogic/pi-mono), not the upstream project. Key deltas:
+This repo is a closed-network security fork of [earendil-works/pi](https://github.com/earendil-works/pi), not the upstream project. Key deltas:
 
 - `secureMode` is on by default: any provider without an explicit `baseUrl` in `~/.spi/agent/models.json` is hidden from the model list and blocked from registration (enforced in `ModelRegistry.getAvailable()`, `ModelRegistry.registerProvider()`, and `resolveCliModel()`; `runner.ts bindCore()` delegates extension provider registration to `ModelRegistry.registerProvider()` rather than enforcing independently). Built-in commercial endpoints (Anthropic, OpenAI, Google, etc.) are invisible unless redirected through a `baseUrl`.
 - No default models — app starts with an empty model list until a provider is configured in `models.json`.

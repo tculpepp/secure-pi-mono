@@ -1,5 +1,7 @@
 # Changelog
 
+## [Unreleased]
+
 > **Fork notice:** this is the closed-network fork
 > [tculpepp/secure-pi-mono](https://github.com/tculpepp/secure-pi-mono). Entries below
 > the fork section are upstream's; issue links point at

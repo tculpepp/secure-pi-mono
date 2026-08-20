@@ -5,7 +5,7 @@
 > the fork section are upstream's; issue links point at
 > [earendil-works/pi](https://github.com/earendil-works/pi).
 
-## [Unreleased]
+## [0.84.3] - 2026-08-20
 
 ### Fork: closed-network and secureMode (synced with upstream v0.84.2)
 

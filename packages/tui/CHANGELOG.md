@@ -5,7 +5,7 @@
 > `@tculpepp/spi-*`. Entries below are upstream's; issue links point at
 > [earendil-works/pi](https://github.com/earendil-works/pi).
 
-## [Unreleased]
+## [0.84.3] - 2026-08-20
 
 ### Fixed
 

@@ -1,4 +1,7 @@
+import { getAgentDir, getModelsPath } from "../../config.ts";
 import type { ExtensionAPI, ExtensionCommandContext } from "../../core/extensions/types.ts";
+import { ModelConfig } from "../../core/model-config.ts";
+import { SettingsManager } from "../../core/settings-manager.ts";
 import { formatBytes, LlamaClient, type LlamaModelInfo, normalizeLlamaServerUrl } from "./client.ts";
 import { findHuggingFaceToken, HuggingFaceClient } from "./huggingface.ts";
 import { createLlamaProvider, LLAMA_PROVIDER_ID } from "./provider.ts";
@@ -39,9 +42,24 @@ async function configuredClient(ctx: ExtensionCommandContext): Promise<LlamaClie
 	return new LlamaClient(serverUrl, result.auth.apiKey);
 }
 
-export default function llamaExtension(pi: ExtensionAPI): void {
+// llama.cpp is an always-on hidden built-in (extensions/index.ts), loaded on every
+// startup regardless of whether anyone uses it. secureMode blocks provider
+// registration without an explicit models.json baseUrl (security-policy.ts); letting
+// that check fail here would turn into a fatal startup diagnostic (main.ts) for every
+// install that never touches llama.cpp. Check first and skip registering instead.
+async function llamaProviderAllowed(): Promise<boolean> {
+	const agentDir = getAgentDir();
+	const settingsManager = SettingsManager.create(process.cwd(), agentDir);
+	if (!settingsManager.getSecureMode()) return true;
+	const modelConfig = await ModelConfig.load(getModelsPath());
+	return Boolean(modelConfig.getProvider(LLAMA_PROVIDER_ID)?.baseUrl);
+}
+
+export default async function llamaExtension(pi: ExtensionAPI): Promise<void> {
 	const provider = createLlamaProvider();
-	pi.registerProvider(provider.provider);
+	if (await llamaProviderAllowed()) {
+		pi.registerProvider(provider.provider);
+	}
 
 	const syncCatalog = async (
 		ctx: ExtensionCommandContext,

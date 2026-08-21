@@ -7,6 +7,18 @@
 > the fork section are upstream's; issue links point at
 > [earendil-works/pi](https://github.com/earendil-works/pi).
 
+### Fork: closed-network and secureMode
+
+#### Fixed
+
+- Fixed a startup crash affecting every install under default `secureMode`: the
+  always-on, hidden `llama.cpp` built-in extension registered its provider
+  unconditionally, which `secureMode` blocked (no `models.json` `baseUrl`) and which
+  `main.ts` then treated as a fatal error, exiting 1 on every real invocation. The
+  extension now checks `secureMode`/`models.json` first and skips registration instead
+  of throwing; run it under `secureMode` by adding an explicit `baseUrl` for
+  `"llama.cpp"` to `models.json` (see `SECURITY-SURFACE.md`).
+
 ## [0.84.3] - 2026-08-20
 
 ### Fork: closed-network and secureMode (synced with upstream v0.84.2)

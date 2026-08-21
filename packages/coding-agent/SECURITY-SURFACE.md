@@ -32,6 +32,7 @@ the file itself — don't rely on the merge having reported a clean auto-merge. 
 | `src/core/extensions/runner.ts` | `bindCore()`'s `registerProvider`/`unregisterProvider` bindings delegate to `ModelRegistry.registerProvider()` (lines ~356-403) — no independent enforcement here, it inherits the gate from `model-runtime.ts`. (Corrects an earlier overstatement in `CLAUDE.md`/`requirements.md` that described this as an independent enforcement point — see PI-18.) | `test/extensions-runner.test.ts` | v0.84.2 |
 | `src/cli/args.ts` | Not an enforcement point — documents the user-facing `--offline` flag and `SPI_OFFLINE`/`SPI_SHARE_VIEWER_URL` env vars (lines ~309, ~420-422). Included in this manifest because it's the surface a user reads to discover the controls above exist. | `test/args.test.ts` | v0.84.2 |
 | `src/config.ts` | Not an enforcement point — `getShareViewerUrl()` builds the `/share` gist URL from `SPI_SHARE_VIEWER_URL`; the refusal itself happens via the `SPI_OFFLINE` ceiling `main.ts` sets, same pattern as tools/package manager. | (none dedicated) | v0.84.2 |
+| `src/extensions/llama/index.ts` | Hidden built-in extension, loaded on every startup regardless of use. `llamaProviderAllowed()` checks secureMode + `models.json` before calling `pi.registerProvider()`, skipping registration instead of letting it throw — an unconditional registration attempt here previously crashed every unconfigured install's startup (GitHub #35), since `main.ts:897` treats any registration-failure diagnostic as fatal. To use under secureMode: add `{"providers":{"llama.cpp":{"baseUrl":"http://<internal-host>:<port>"}}}` to `models.json`, then `/login llama.cpp` to set the live server URL/credentials. | `test/llama-extension.test.ts` | v0.84.3 |
 
 **Gap found during this audit**: `src/modes/interactive/interactive-mode.ts`'s offline
 guard (line ~1054) has no test that exercises `InteractiveMode` directly — coverage is
@@ -59,4 +60,7 @@ from the workspace must restore them explicitly, not treat the deletion as legit
 `client`, `evals`, `protocol`, `server`, `session-backends`, `telemetry` all landed in
 the v0.84.2 sync and are present in the workspace today. None of them went through the
 triage this manifest's process calls for — in particular `telemetry` should be read for
-outbound-reporting behavior before being trusted by default. Tracked as PI-16.
+outbound-reporting behavior before being trusted by default. Tracked as
+[#23](https://github.com/tculpepp/secure-pi-mono/issues/23) (issue tracking moved from
+Linear to GitHub Issues, see #35's follow-ups for the built-in-extension triage process
+this gap motivated).

@@ -8,8 +8,6 @@
   <a href="https://www.npmjs.com/package/@tculpepp/spi-coding-agent"><img alt="npm" src="https://img.shields.io/npm/v/@tculpepp/spi-coding-agent?style=flat-square" /></a>
 </p>
 
-> New issues and PRs from new contributors are auto-closed by default. Maintainers review auto-closed issues daily. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
-
 ---
 
 Pi is a minimal terminal coding harness. Adapt pi to your workflows, not the other way around, without having to fork and modify pi internals. Extend it with TypeScript [Extensions](#extensions), [Skills](#skills), [Prompt Templates](#prompt-templates), and [Themes](#themes). Put your extensions, skills, prompt templates, and themes in [Pi Packages](#pi-packages) and share them with others via npm or git.
@@ -694,7 +692,9 @@ These values are resolved when each command starts. See [Environment Variables](
 
 ## Contributing & Development
 
-See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines and [docs/development.md](docs/development.md) for setup, forking, and debugging.
+This is a closed-network security fork maintained by a single team; it does not accept
+outside contributions. See [docs/development.md](docs/development.md) for setup,
+forking, and debugging.
 
 ## License
 

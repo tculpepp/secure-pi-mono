@@ -72,7 +72,8 @@ If rebase conflicts occur:
 
 ## Issues and PRs
 
-See `CONTRIBUTING.md` for the contributor gate (auto-close workflows, `lgtm`/`lgtmi`, quality bar).
+This is a closed-network fork maintained by a single team — no outside-contributor
+gating (no `CONTRIBUTING.md`, no auto-close workflows).
 
 When reviewing PRs:
 

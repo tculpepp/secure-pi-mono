@@ -8,8 +8,6 @@
   <a href="https://www.npmjs.com/package/@tculpepp/spi-coding-agent"><img alt="npm" src="https://img.shields.io/npm/v/@tculpepp/spi-coding-agent?style=flat-square" /></a>
 </p>
 
-> New issues and PRs from new contributors are auto-closed by default. Maintainers review auto-closed issues daily. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
 # Pi — Secure Closed-Network Fork
 
 This is a security fork of [earendil-works/pi](https://github.com/earendil-works/pi)
@@ -160,7 +158,9 @@ If you need stronger boundaries, containerize or sandbox Pi. See [packages/codin
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [AGENTS.md](AGENTS.md) for project-specific rules (for both humans and agents).  Longer term plans for Pi can also be found in [RFCs](https://rfc.earendil.com/keyword/pi/).
+This is a closed-network security fork maintained by a single team; it does not accept
+outside contributions. See [AGENTS.md](AGENTS.md) for project-specific rules (for both
+humans and agents).
 
 ## Development
 

@@ -1,8 +1,12 @@
 import { once } from "node:events";
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { createServer, type RequestListener, type Server, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import type { AuthContext, AuthPrompt, ModelsPublication, ModelsStoreEntry } from "@tculpepp/spi-ai";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { ENV_AGENT_DIR } from "../src/config.ts";
 import { createEventBus } from "../src/core/event-bus.ts";
 import { createExtensionRuntime, loadExtensionFromFactory } from "../src/core/extensions/loader.ts";
 import { LlamaClient, type LlamaProgress, normalizeLlamaServerUrl } from "../src/extensions/llama/client.ts";
@@ -39,18 +43,62 @@ afterEach(async () => {
 });
 
 describe("llama.cpp extension", () => {
-	it("registers a native provider and /llama command", async () => {
-		const runtime = createExtensionRuntime();
-		const extension = await loadExtensionFromFactory(
-			llamaExtension,
-			process.cwd(),
-			createEventBus(),
-			runtime,
-			"<inline:llama.cpp>",
-		);
+	describe("secureMode-gated registration", () => {
+		const originalAgentDir = process.env[ENV_AGENT_DIR];
+		let agentDir: string;
 
-		expect(extension.commands.get("llama")?.description).toBe("Manage llama.cpp router models");
-		expect(runtime.pendingNativeProviderRegistrations.map((entry) => entry.provider.id)).toEqual([LLAMA_PROVIDER_ID]);
+		beforeEach(() => {
+			agentDir = mkdtempSync(join(tmpdir(), "llama-extension-agent-"));
+			process.env[ENV_AGENT_DIR] = agentDir;
+		});
+
+		afterEach(() => {
+			if (originalAgentDir === undefined) delete process.env[ENV_AGENT_DIR];
+			else process.env[ENV_AGENT_DIR] = originalAgentDir;
+			if (existsSync(agentDir)) rmSync(agentDir, { recursive: true });
+		});
+
+		async function loadLlama() {
+			const runtime = createExtensionRuntime();
+			const extension = await loadExtensionFromFactory(
+				llamaExtension,
+				process.cwd(),
+				createEventBus(),
+				runtime,
+				"<inline:llama.cpp>",
+			);
+			return { runtime, extension };
+		}
+
+		it("still registers the /llama command but skips the provider when secureMode is on with no configured baseUrl", async () => {
+			// secureMode defaults to true with no settings.json present.
+			const { runtime, extension } = await loadLlama();
+
+			expect(extension.commands.get("llama")?.description).toBe("Manage llama.cpp router models");
+			expect(runtime.pendingNativeProviderRegistrations).toEqual([]);
+		});
+
+		it("registers the provider when models.json has an explicit llama.cpp baseUrl", async () => {
+			writeFileSync(
+				join(agentDir, "models.json"),
+				JSON.stringify({ providers: { [LLAMA_PROVIDER_ID]: { baseUrl: "http://internal-llama:8080" } } }),
+			);
+			const { runtime } = await loadLlama();
+
+			expect(runtime.pendingNativeProviderRegistrations.map((entry) => entry.provider.id)).toEqual([
+				LLAMA_PROVIDER_ID,
+			]);
+		});
+
+		it("registers the provider when secureMode is off, regardless of models.json", async () => {
+			mkdirSync(agentDir, { recursive: true });
+			writeFileSync(join(agentDir, "settings.json"), JSON.stringify({ secureMode: false }));
+			const { runtime } = await loadLlama();
+
+			expect(runtime.pendingNativeProviderRegistrations.map((entry) => entry.provider.id)).toEqual([
+				LLAMA_PROVIDER_ID,
+			]);
+		});
 	});
 
 	it("normalizes management and inference URLs", () => {

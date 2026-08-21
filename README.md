@@ -160,7 +160,7 @@ If you need stronger boundaries, containerize or sandbox Pi. See [packages/codin
 
 This is a closed-network security fork maintained by a single team; it does not accept
 outside contributions. See [AGENTS.md](AGENTS.md) for project-specific rules (for both
-humans and agents).
+humans and agents), and [RELEASE.md](RELEASE.md) for the release process.
 
 ## Development
 

@@ -1,5 +1,7 @@
 # Changelog
 
+## [Unreleased]
+
 ## [0.84.4] - 2026-08-22
 
 > **Fork notice:** this is the closed-network fork

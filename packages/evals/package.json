@@ -1,6 +1,6 @@
 {
 	"name": "@tculpepp/spi-evals",
-	"version": "0.84.3",
+	"version": "0.84.4",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -9,8 +9,8 @@
 		"test": "vitest run --config vitest.test.config.ts"
 	},
 	"devDependencies": {
-		"@tculpepp/spi-ai": "^0.84.3",
-		"@tculpepp/spi-coding-agent": "^0.84.3",
+		"@tculpepp/spi-ai": "^0.84.4",
+		"@tculpepp/spi-coding-agent": "^0.84.4",
 		"@types/node": "24.12.4",
 		"shx": "0.4.0",
 		"typescript": "5.9.3",

@@ -1,6 +1,6 @@
 {
 	"name": "@tculpepp/spi-session-backend-sqlite-node",
-	"version": "0.84.3",
+	"version": "0.84.4",
 	"description": "Node sqlite session backend for @tculpepp/spi-agent-core sessions",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -34,8 +34,8 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@tculpepp/spi-ai": "^0.84.3",
-		"@tculpepp/spi-agent-core": "^0.84.3"
+		"@tculpepp/spi-ai": "^0.84.4",
+		"@tculpepp/spi-agent-core": "^0.84.4"
 	},
 	"devDependencies": {
 		"@vitest/coverage-v8": "4.1.9",

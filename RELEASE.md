@@ -42,11 +42,11 @@ npm run release:local -- --out /tmp/pi-local-release --force
 cd /tmp
 
 # Node package
-/tmp/pi-local-release/node/pi --help
-/tmp/pi-local-release/node/pi --version
-/tmp/pi-local-release/node/pi --list-models
-/tmp/pi-local-release/node/pi -p "Say exactly: ok"
-/tmp/pi-local-release/node/pi          # interactive — run in tmux, send a real prompt, wait for a reply
+/tmp/pi-local-release/node/spi --help
+/tmp/pi-local-release/node/spi --version
+/tmp/pi-local-release/node/spi --list-models
+/tmp/pi-local-release/node/spi -p "Say exactly: ok"
+/tmp/pi-local-release/node/spi          # interactive — run in tmux, send a real prompt, wait for a reply
 
 # Bun binary
 /tmp/pi-local-release/bun/pi --help
